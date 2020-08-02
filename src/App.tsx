@@ -1,13 +1,12 @@
-import { StatusBar } from 'expo-status-bar';
 import React from 'react'
-import { NavigationContainer } from '@react-navigation/native'
 import {
   DefaultTheme,
   Provider as PaperProvider,
 } from 'react-native-paper'
 
-import Layout from './pages/Layout'
+import UserContext from './UserContext'
 import Routes from './Routes'
+import ErrorBoundary from './pages/ErrorBoundary'
 
 const theme = {
   ...DefaultTheme,
@@ -15,9 +14,12 @@ const theme = {
 
 export default function App() {
   return (
-    <PaperProvider theme={theme}>
-      <Routes />
-      {/* <Layout /> */}
-    </PaperProvider>
+    <ErrorBoundary>
+      <PaperProvider theme={theme}>
+        <UserContext>
+          <Routes />
+        </UserContext>
+      </PaperProvider>
+    </ErrorBoundary>
   )
 }

@@ -32,8 +32,8 @@ const LoginContainer = ({
   return (
     <Formik
       initialValues={{
-        email: 'vagnervst17@email.com',
-        password: 'vagner47',
+        email: '',
+        password: '',
       }}
       onSubmit={onSubmit}
     >
@@ -56,6 +56,7 @@ const LoginContainer = ({
             label="Password"
             textContentType="password"
             style={styles.bottomSpacing}
+            onChangeText={handleChange('password')}
             value={values.password}
           />
           <Button

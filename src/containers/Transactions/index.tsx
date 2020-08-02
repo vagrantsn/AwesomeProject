@@ -1,23 +1,53 @@
 import React from 'react'
 import {
   FlatList,
-  Text,
+  StyleSheet,
   View,
+  RefreshControl,
 } from 'react-native'
+import { ActivityIndicator } from 'react-native-paper'
 
-const TransactionsContainer = ({ items } : { items: any }) => {
-  const renderItem = ({ item } : { item: any }) => (
-    <View>
-      <Text>{item.title}</Text>
-    </View>
-  )
+import TransactionItem from './Item'
 
-  return (
-    <FlatList
-      data={items}
-      renderItem={renderItem}
-    />
-  )
-}
+const styles = StyleSheet.create({
+  container: {
+    justifyContent: 'center',
+    height: '100%',
+  },
+})
+
+const TransactionsContainer = ({
+  items,
+  loading,
+  onRefresh,
+} : {
+  items: any,
+  loading: boolean,
+  onRefresh: any,
+}) => (
+  <View
+    style={styles.container}
+  >
+    {loading
+      ? (
+        <ActivityIndicator />
+      ) : (
+        <FlatList
+          data={items}
+          refreshControl={
+            <RefreshControl refreshing={loading} onRefresh={onRefresh} />
+          }
+          renderItem={({ item }) => (
+            <TransactionItem
+              key={item.id}
+              id={item.id}
+              amount={item.amount}
+            />
+          )}
+        />
+      )
+    }
+  </View>
+)
 
 export default TransactionsContainer

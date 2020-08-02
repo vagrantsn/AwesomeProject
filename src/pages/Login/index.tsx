@@ -1,10 +1,15 @@
-import React, { useState } from 'react'
-import pagarme from 'pagarme'
+import React, { useContext, useState } from 'react'
+import { useNavigation } from '@react-navigation/native'
+import pagarme from '../../clients/pagarme'
+
+import { Context } from '../../UserContext'
 
 import LoginContainer from '../../containers/Login'
 
 const LoginPage = () => {
   const [loading, setLoading] = useState(false)
+  const { setSession } = useContext(Context)
+  const navigation = useNavigation()
 
   const handleSubmit = async ({
     email,
@@ -15,11 +20,16 @@ const LoginPage = () => {
   }) => {
     setLoading(true)
 
-    const session = await pagarme.client.connect({ email, password })
+    try {
+      const session = await pagarme.sessions.create({ email, password })
 
-    console.log(session)
+      setSession(session.session_id)
+      setLoading(false)
 
-    setLoading(false)
+      navigation.navigate('LoggedArea')
+    } catch (e) {
+      setLoading(false)
+    }
   }
 
   return (
